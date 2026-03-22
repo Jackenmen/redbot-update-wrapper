@@ -1,6 +1,10 @@
+.PHONY: dev
+dev: sync build-go
+
 .PHONY: sync
 sync:
 	uv sync
+	ln -fs "$$(realpath -s --relative-to="$$(realpath .venv/bin)" redbot-update)" .venv/bin/redbot-update
 
 .PHONY: build-all
 build-all: build-go build-python

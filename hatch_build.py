@@ -199,6 +199,17 @@ class CustomBuildHook(BuildHookInterface):
         if self.target_name == "sdist":
             return
 
+        if version == "editable":
+            binary_path = (
+                "Scripts\\redbot-update.exe" if sys.platform == "win32" else "bin/redbot-update"
+            )
+            # this won't actually be displayed by the frontend but what can you do...
+            self.app.display_warning(
+                "redbot-update binary is not included in an editable wheel."
+                f" You should manually add a symlink to it at <venv dir>/{binary_path}"
+            )
+            return
+
         build_data["pure_python"] = False
         build_data["tag"] = self._platform_tag
 
@@ -224,6 +235,6 @@ class CustomBuildHook(BuildHookInterface):
         build_data["shared_scripts"][self._binary_path] = self._binary_name
 
     def finalize(self, version: str, build_data: Dict[str, Any], artifact_path: str) -> None:
-        if self.target_name == "sdist":
+        if self.target_name == "sdist" or version == "editable":
             return
         os.unlink(self._binary_path)
