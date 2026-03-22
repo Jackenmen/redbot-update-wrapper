@@ -8,12 +8,29 @@ import (
 	"strings"
 )
 
+type VirtualEnvSource int
+
+const (
+	SourceEnvVar VirtualEnvSource = iota
+	SourceExeDir
+)
+
+var sourceName = map[VirtualEnvSource]string{
+	SourceEnvVar: "EnvVar",
+	SourceExeDir: "ExeDir",
+}
+
 type VirtualEnv struct {
-	base string
+	base   string
+	source VirtualEnvSource
 }
 
 func (venv VirtualEnv) GetBase() string {
 	return venv.base
+}
+
+func (venv VirtualEnv) GetSource() VirtualEnvSource {
+	return venv.source
 }
 
 func (venv VirtualEnv) GetPythonExecutable() (string, error) {
@@ -55,9 +72,14 @@ func (venv VirtualEnv) GetPyVenvConfig() (map[string]string, error) {
 }
 
 func GetVirtualEnv(exe string) (VirtualEnv, error) {
-	venv := VirtualEnv{}
+	virtualEnvVar := os.Getenv("VIRTUAL_ENV")
+	venv := VirtualEnv{base: virtualEnvVar, source: SourceEnvVar}
+	if virtualEnvVar != "" {
+		return venv, nil
+	}
 
 	// assume that our executable (`redbot-update`) resides in venv's scripts directory
+	venv.source = SourceExeDir
 	scriptsDir := path.Dir(exe)
 	venvDir := path.Dir(scriptsDir)
 	venv.base = venvDir
