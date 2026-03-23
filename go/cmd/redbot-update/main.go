@@ -14,8 +14,6 @@ import (
 )
 
 const (
-	DefaultProgramName = "redbot-update"
-
 	envVarNamePrefix   = "REDBOT_UPDATE_WRAPPER_"
 	LogDebugEnvVarName = envVarNamePrefix + "LOG_DEBUG"
 	LogFileEnvVarName  = envVarNamePrefix + "LOG_FILE"
