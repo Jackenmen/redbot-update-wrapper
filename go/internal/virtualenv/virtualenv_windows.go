@@ -2,8 +2,8 @@
 
 package virtualenv
 
-import "path"
+import "path/filepath"
 
 func getPythonExecutablePath(venvDir string) string {
-	return path.Join(venvDir, "Scripts", "python.exe")
+	return filepath.Join(venvDir, "Scripts", "python.exe")
 }

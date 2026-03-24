@@ -7,7 +7,7 @@ import (
 	"os"
 	"os/exec"
 	"os/signal"
-	"path"
+	"path/filepath"
 	"syscall"
 
 	"github.com/cog-creators/redbot-update-wrapper/go/internal/osutils"
@@ -70,7 +70,7 @@ func (r *ProcessRunner) Start(pythonExe string) error {
 func duplicateExe(exe string, venv virtualenv.VirtualEnv) string {
 	// `.tmp` suffix should prevent the file from being executable on Windows,
 	// while the chmod call should prevent it on Unix
-	newLocation := path.Join(venv.GetBase(), DefaultProgramName+".tmp")
+	newLocation := filepath.Join(venv.GetBase(), DefaultProgramName+".tmp")
 
 	slog.Debug("Moving executable", "newLocation", newLocation)
 	if err := os.Rename(exe, newLocation); err != nil {

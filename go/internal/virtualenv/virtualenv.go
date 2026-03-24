@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"log/slog"
 	"os"
-	"path"
 	"path/filepath"
 	"strings"
 )
@@ -51,7 +50,7 @@ func (venv VirtualEnv) GetPythonExecutable() (string, error) {
 }
 
 func (venv VirtualEnv) GetPyVenvConfigPath() string {
-	return path.Join(venv.base, "pyvenv.cfg")
+	return filepath.Join(venv.base, "pyvenv.cfg")
 }
 
 func (venv VirtualEnv) GetPyVenvConfig() (map[string]string, error) {
@@ -89,8 +88,8 @@ func GetVirtualEnv(exe string) (VirtualEnv, error) {
 
 	// assume that our executable (`redbot-update`) resides in venv's scripts directory
 	venv.source = SourceExeDir
-	scriptsDir := path.Dir(exe)
-	unresolvedVenvDir := path.Dir(scriptsDir)
+	scriptsDir := filepath.Dir(exe)
+	unresolvedVenvDir := filepath.Dir(scriptsDir)
 	venv.base = unresolvedVenvDir
 	venvDir, err := filepath.EvalSymlinks(unresolvedVenvDir)
 	if err != nil {
