@@ -82,7 +82,7 @@ func CopyFile(src, dst string) error {
 	}
 	dstMode := fi.Mode()
 
-	fdst, err := os.OpenFile(dst, os.O_CREATE|os.O_EXCL, dstMode)
+	fdst, err := os.Create(dst)
 	if err != nil {
 		return err
 	}
