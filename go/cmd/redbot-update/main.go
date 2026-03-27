@@ -71,21 +71,25 @@ func duplicateExe(exe string, venv virtualenv.VirtualEnv) string {
 	// `.tmp` suffix should prevent the file from being executable on Windows,
 	// while the chmod call should prevent it on Unix
 	newLocation := filepath.Join(venv.GetBase(), DefaultProgramName+".tmp")
+	log := slog.With("new_location", newLocation)
 
-	slog.Debug("Moving executable", "newLocation", newLocation)
+	log.Debug("Moving executable to new location")
 	if err := os.Rename(exe, newLocation); err != nil {
-		slog.Debug("Failed to move executable", "newLocation", newLocation, "error", err)
+		log.Debug("Failed to move executable to new location", "error", err)
 
-		fmt.Printf("%v\n\nFailed to move %v to %v.", err, exe, newLocation)
+		fmt.Printf(
+			"%v\n\nFailed to move %v to %v. Another redbot-update process may already be running.",
+			err, exe, newLocation,
+		)
 		os.Exit(1)
 	}
 
-	slog.Debug("Copying executable", "newLocation", newLocation)
+	log.Debug("Copying executable")
 	if copyErr := osutils.CopyFile(newLocation, exe); copyErr != nil {
-		slog.Debug("Failed to copy executable", "newLocation", newLocation, "error", copyErr)
+		log.Debug("Failed to copy executable", "error", copyErr)
 
 		if renameErr := os.Rename(newLocation, exe); renameErr != nil {
-			slog.Debug("Failed to revert executable move", "newLocation", newLocation, "error", renameErr)
+			log.Debug("Failed to revert executable move", "error", renameErr)
 
 			err := fmt.Errorf("%w\n%w\nFailed to revert move", copyErr, renameErr)
 			fmt.Printf(
@@ -94,7 +98,7 @@ func duplicateExe(exe string, venv virtualenv.VirtualEnv) string {
 				err, newLocation, exe,
 			)
 		} else {
-			slog.Debug("Reverted executable move", "newLocation", newLocation, "error", renameErr)
+			log.Debug("Reverted executable move", "error", renameErr)
 
 			fmt.Printf("%v\n\nFailed to copy %v to %v.", copyErr, newLocation, exe)
 		}
@@ -102,9 +106,9 @@ func duplicateExe(exe string, venv virtualenv.VirtualEnv) string {
 		os.Exit(1)
 	}
 
-	slog.Debug("Making executable non-executable", "newLocation", newLocation)
+	log.Debug("Making executable non-executable")
 	if err := osutils.RemovePermissions(newLocation, 0111); err != nil {
-		slog.Debug("Failed to make executable non-executable", "newLocation", newLocation, "error", err)
+		log.Debug("Failed to make executable non-executable", "error", err)
 
 		fmt.Printf("%v\n\nFailed to make executable at %v non-executable.", err, newLocation)
 		os.Exit(1)
