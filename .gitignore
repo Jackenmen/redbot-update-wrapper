@@ -4,5 +4,6 @@ dist/
 /.venv
 /redbot-update
 *.exe
+generated_*.go
 **/resources/generated/
 resources_windows.syso

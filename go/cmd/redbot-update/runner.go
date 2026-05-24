@@ -61,18 +61,20 @@ func (o *SpawnProcessRequestOutput) SetRequestType(v string) {
 }
 
 type ProcessRunner struct {
-	currentCmd *exec.Cmd
-	wrapperExe string
-	runnerDir  string
-	pythonExe  string
-	startArgs  []string
+	currentCmd     *exec.Cmd
+	wrapperVersion string
+	wrapperExe     string
+	runnerDir      string
+	pythonExe      string
+	startArgs      []string
 }
 
-func NewProcessRunner(wrapperExe, pythonExe string) *ProcessRunner {
+func NewProcessRunner(wrapperVersion, wrapperExe, pythonExe string) *ProcessRunner {
 	return &ProcessRunner{
-		wrapperExe: wrapperExe,
-		pythonExe:  pythonExe,
-		startArgs:  append([]string{"-m", "redbot._update"}, os.Args[1:]...),
+		wrapperVersion: wrapperVersion,
+		wrapperExe:     wrapperExe,
+		pythonExe:      pythonExe,
+		startArgs:      append([]string{"-m", "redbot._update"}, os.Args[1:]...),
 	}
 }
 
@@ -228,6 +230,7 @@ func (r *ProcessRunner) Start() error {
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 	cmd.Env = append(os.Environ(),
+		"REDBOT_UPDATE_RUNNER_WRAPPER_VERSION="+r.wrapperVersion,
 		"REDBOT_UPDATE_RUNNER_WRAPPER_EXE="+r.wrapperExe,
 		"REDBOT_UPDATE_RUNNER_DIR="+r.runnerDir,
 	)

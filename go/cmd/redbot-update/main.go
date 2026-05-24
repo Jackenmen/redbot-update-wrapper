@@ -104,7 +104,7 @@ func main() {
 	logger := slog.New(slog.NewMultiHandler(handlers...))
 	slog.SetDefault(logger)
 
-	slog.Debug("redbot-update wrapper started", "pid", pidLogValue{})
+	slog.Debug("redbot-update wrapper started", "wrapperVersion", wrapperVersion, "pid", pidLogValue{})
 
 	exe, err := osutils.GetExecutableWithPreservedSymlinks(DefaultProgramName)
 	if err != nil {
@@ -163,7 +163,7 @@ func main() {
 		}
 	}
 
-	runner := NewProcessRunner(exe, pythonExe)
+	runner := NewProcessRunner(wrapperVersion, exe, pythonExe)
 	if err := runner.Start(); err != nil {
 		fmt.Printf("Failed to start the process:\n%v\n", err)
 		os.Exit(1)
