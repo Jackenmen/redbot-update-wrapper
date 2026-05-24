@@ -198,6 +198,12 @@ class CustomBuildHook(BuildHookInterface):
 
     def initialize(self, version: str, build_data: Dict[str, Any]) -> None:
         if self.target_name == "sdist":
+            go_bin_args = _get_go_bin_args(prefer_system=not self._force_use_go_bin)
+            generate_command = (*go_bin_args, "generate", "./go/cmd/redbot-update")
+
+            self.app.display_info("Generating redbot-update resources")
+            subprocess.check_call(generate_command)
+            self.app.display_success("Generated redbot-update resources")
             return
 
         if version == "editable":

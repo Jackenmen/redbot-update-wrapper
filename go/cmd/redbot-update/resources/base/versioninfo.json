@@ -1,0 +1,23 @@
+{
+    "FixedFileInfo": {
+        "FileFlagsMask": "3f",
+        "FileFlags ": "00",
+        "FileOS": "040004",
+        "FileType": "01",
+        "FileSubType": "00"
+    },
+    "StringFileInfo": {
+        "Comments": "",
+        "CompanyName": "Cog Creators",
+        "FileDescription": "redbot-update wrapper",
+        "InternalName": "redbot-update.exe",
+        "LegalCopyright": "Copyright (c) 2026 Cog Creators (https://github.com/Cog-Creators)",
+        "LegalTrademarks": "",
+        "OriginalFilename": "redbot-update.exe",
+        "PrivateBuild": "",
+        "ProductName": "redbot-update wrapper",
+        "SpecialBuild": ""
+    },
+    "IconPath": "resources/cog-creators.ico",
+    "ManifestPath": "resources/generated/app.manifest"
+}

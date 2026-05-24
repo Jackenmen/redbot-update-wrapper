@@ -11,6 +11,7 @@ build-all: build-go build-python
 
 .PHONY: build-go
 build-go:
+	CGO_ENABLED=1 go generate ./...
 	CGO_ENABLED=1 go build ./...
 	CGO_ENABLED=1 go build ./go/cmd/redbot-update
 
@@ -38,6 +39,7 @@ fmt format reformat: fmt-go fmt-python
 .PHONY: fmt-go format-go reformat-go
 fmt-go format-go reformat-go:
 	go fmt ./...
+	cd ./go/build_tools && go fmt ./...
 
 .PHONY: fmt-python format-python reformat-python
 fmt-python format-python reformat-python:
