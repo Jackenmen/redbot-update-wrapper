@@ -11,6 +11,7 @@ build-all: build-go build-python
 
 .PHONY: build-go
 build-go:
+	CGO_ENABLED=1 go generate ./...
 	CGO_ENABLED=1 go build ./...
 	CGO_ENABLED=1 go build ./go/cmd/redbot-update
 

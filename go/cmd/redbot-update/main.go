@@ -1,3 +1,6 @@
+//go:generate go run ../../build_tools/generate_versioninfo ../../..
+//go:generate go tool github.com/josephspurrier/goversioninfo/cmd/goversioninfo -o resources_windows.syso resources/generated/versioninfo.json
+
 package main
 
 import (
