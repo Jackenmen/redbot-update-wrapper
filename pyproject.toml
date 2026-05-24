@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "redbot-update"
-version = "1.1.0"
+version = "1.2.0"
 description = "Wrapper binary for performing Red-DiscordBot updates."
 requires-python = ">=3.8"
 readme = "README.md"
